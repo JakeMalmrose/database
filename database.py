@@ -17,10 +17,9 @@ class employee:
 
 
 def PrintPeopleDetails(path):
-    def PrintPeopleDetails(path):
-        for file in os.listdir(path):
-            with open(os.path.join(path, file), 'r') as f:
-                print(f.read())
+    for file in os.listdir(path):
+        with open(os.path.join(path, file), 'r') as f:
+            print(f.read())
 
 def PrintEmployees(path):
     for file in os.listdir(path):
