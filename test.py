@@ -38,7 +38,19 @@ class testDatabase(unittest.TestCase):
         self.assertIn("Test content 2", captured_output.getvalue())
 
     def test_PrintEmployees(self):
-        pass
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with open(os.path.join(tmpdir, "file1.txt"), "w") as f:
+                f.write("1, John, Doe, 2019")
+            with open(os.path.join(tmpdir, "file2.txt"), "w") as f:
+                f.write("2, Jane, Doe, 2019")
+
+            # changing sys.stdout again so we can look at it
+            captured_output = io.StringIO()
+            sys.stdout = captured_output
+            db.PrintEmployees(tmpdir)
+
+        self.assertIn("1 John Doe 2019", captured_output.getvalue())
+        self.assertIn("2 Jane Doe 2019", captured_output.getvalue())
 
 if __name__ == '__main__':
     unittest.main()
