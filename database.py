@@ -2,8 +2,6 @@ import os
 import csv
 
 class employee:
-    # Required fields are an employee ID, first and last name, and their age stored in birth year
-    # Possible but not required fields are salary and employment date
     def __init__(self, id, firstName, lastName, hireYear):
         if not id: # checking to make sure the ID is not empty or none
             raise ValueError("ID is required")
