@@ -6,9 +6,9 @@ class employee:
         if not id: # checking to make sure the ID is not empty or none
             raise ValueError("ID is required")
         self.id = id
-        self.firstName = firstName.strip() #stripping cause apparently we store csv with spaces now
-        self.lastName = lastName.strip()
-        self.hireYear = hireYear.strip()
+        self.firstName = str(firstName).strip() # we store csv with whitespace, so we need to strip it
+        self.lastName = str(lastName).strip()
+        self.hireYear = int(str(hireYear).strip())
 
     
     def toString(self):
