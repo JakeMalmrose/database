@@ -24,14 +24,14 @@ class TestEmployee(unittest.TestCase):
 class testDatabase(unittest.TestCase):
     def test_PrintPeopleDetails(self):
         with tempfile.TemporaryDirectory() as tmpdir:
+            # need all this stuff so we can grab the output of the PrintPeopleDetails function
+            captured_output = io.StringIO()
+            sys.stdout = captured_output
+            
             with open(os.path.join(tmpdir, "file1.txt"), "w") as f:
                 f.write("Test content 1")
             with open(os.path.join(tmpdir, "file2.txt"), "w") as f:
                 f.write("Test content 2")
-
-            # need all this stuff so we can grab the output of the PrintPeopleDetails function
-            captured_output = io.StringIO()
-            sys.stdout = captured_output
             db.PrintPeopleDetails(tmpdir)
 
         self.assertIn("Test content 1", captured_output.getvalue())
@@ -39,14 +39,14 @@ class testDatabase(unittest.TestCase):
 
     def test_PrintEmployees(self):
         with tempfile.TemporaryDirectory() as tmpdir:
+            # changing sys.stdout again so we can look at it
+            captured_output = io.StringIO()
+            sys.stdout = captured_output
+
             with open(os.path.join(tmpdir, "file1.txt"), "w") as f:
                 f.write("1, John, Doe, 2019")
             with open(os.path.join(tmpdir, "file2.txt"), "w") as f:
                 f.write("2, Jane, Doe, 2019")
-
-            # changing sys.stdout again so we can look at it
-            captured_output = io.StringIO()
-            sys.stdout = captured_output
             db.PrintEmployees(tmpdir)
 
         self.assertIn("1 John Doe 2019", captured_output.getvalue())
