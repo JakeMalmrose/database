@@ -28,7 +28,7 @@ def PrintEmployees(path):
             for row in reader:
                 id, firstName, lastName, hireYear = row
                 emp = employee(id, firstName, lastName, hireYear)
-                print(emp.toString())
+                print(str(emp))
             
         
 
