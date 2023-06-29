@@ -4,7 +4,8 @@ import tempfile
 import os
 import sys
 import io
-simple_path = "C:/Users/Draupniyr/Downloads/Assignment 1 - data-1/people/simple"
+#simple_path = "C:/Users/Draupniyr/Downloads/Assignment 1 - data-1/people/simple"
+#cant use simple path here
 
 class TestEmployee(unittest.TestCase):
     def test_employee_init(self):
