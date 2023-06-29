@@ -11,7 +11,7 @@ class employee:
         self.hireYear = int(str(hireYear).strip())
 
     
-    def toString(self):
+    def __str__(self):
         return str(self.id) + " " + self.firstName + " " + self.lastName + " " + str(self.hireYear)
     
 

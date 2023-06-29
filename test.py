@@ -20,7 +20,7 @@ class TestEmployee(unittest.TestCase):
 
     def test_employee_toString(self):
         testEmp = db.employee(1, "John", "Doe", 2019)
-        self.assertEqual(testEmp.toString(), "1 John Doe 2019")
+        self.assertEqual(str(testEmp), "1 John Doe 2019")
 
 class testDatabase(unittest.TestCase):
     def test_PrintPeopleDetails(self):
