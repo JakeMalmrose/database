@@ -55,7 +55,7 @@ class testDatabase(unittest.TestCase):
 
     def test_AddEmployee(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            db.AddEmployee(1, "John", "DoubleJohn", 2019)
+            db.AddEmployee(tmpdir, 1, "John", "Doe", 2019)
             with open(os.path.join(tmpdir, "1.txt"), "r") as f:
                 self.assertEqual(f.read(), "1, John, Doe, 2019")
 

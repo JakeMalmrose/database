@@ -14,8 +14,10 @@ class employee:
     def __str__(self):
         return str(self.id) + " " + self.firstName + " " + self.lastName + " " + str(self.hireYear)
     
-def AddEmployee(id, firstName, lastName, hireYear):
-    pass
+def AddEmployee(path, id, firstName, lastName, hireYear):
+    with open(os.path.join(path, str(id) + ".txt"), "w") as f:
+        f.write(str(id) + ", " + firstName + ", " + lastName + ", " + str(hireYear))
+
 
 def DeleteEmployee(id):
     pass
