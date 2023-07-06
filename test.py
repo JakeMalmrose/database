@@ -54,7 +54,10 @@ class testDatabase(unittest.TestCase):
         self.assertIn("2 Jane Doe 2019", captured_output.getvalue())
 
     def test_AddEmployee(self):
-        pass
+        with tempfile.TemporaryDirectory() as tmpdir:
+            db.AddEmployee(1, "John", "DoubleJohn", 2019)
+            with open(os.path.join(tmpdir, "1.txt"), "r") as f:
+                self.assertEqual(f.read(), "1, John, Doe, 2019")
 
     def test_DeleteEmployee(self):
         pass
