@@ -14,7 +14,20 @@ class employee:
     def __str__(self):
         return str(self.id) + " " + self.firstName + " " + self.lastName + " " + str(self.hireYear)
     
+def AddEmployee(id, firstName, lastName, hireYear):
+    pass
 
+def DeleteEmployee(id):
+    pass
+
+def UpdateEmployee(id, firstName, lastName, hireYear):
+    pass
+
+def SerializeAllEmployees():
+    pass
+
+def GetSerializedEmployee(id):
+    pass
 
 def PrintPeopleDetails(path):
     for file in os.listdir(path):
