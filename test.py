@@ -53,5 +53,20 @@ class testDatabase(unittest.TestCase):
         self.assertIn("1 John Doe 2019", captured_output.getvalue())
         self.assertIn("2 Jane Doe 2019", captured_output.getvalue())
 
+    def test_AddEmployee(self):
+        pass
+
+    def test_DeleteEmployee(self):
+        pass
+
+    def test_UpdateEmployee(self):
+        pass
+
+    def test_SerializeAllEmployees(self):
+        pass
+
+    def test_GetSerializedEmployee(self):
+        pass
+
 if __name__ == '__main__':
     unittest.main()
