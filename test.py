@@ -60,7 +60,11 @@ class testDatabase(unittest.TestCase):
                 self.assertEqual(f.read(), "1, John, Doe, 2019")
 
     def test_DeleteEmployee(self):
-        pass
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with open(os.path.join(tmpdir, "1.txt"), "w") as f:
+                f.write("1, John, Doe, 2019")
+            db.DeleteEmployee(tmpdir, 1)
+            self.assertFalse(os.path.exists(os.path.join(tmpdir, "1.txt")))
 
     def test_UpdateEmployee(self):
         pass
