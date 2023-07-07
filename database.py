@@ -46,7 +46,10 @@ def PickleSerializeEmployee(employee, path):
         f.close()
 
 def GetSerializedEmployee(path, id):
-    pass
+    with open(os.path.join(path, str(id) + ".pickle"), 'rb') as f:
+        emp = pickle.load(f)
+        f.close()
+        return emp
 
 def PrintPeopleDetails(path):
     for file in os.listdir(path):
