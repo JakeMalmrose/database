@@ -87,8 +87,8 @@ class testDatabase(unittest.TestCase):
             with open(os.path.join(tmpdir, "2.txt"), "w") as f:
                 f.write("2, Jane, Doe, 2019")
             db.SerializeAllEmployees(tmpdir)
-            self.assertTrue(os.path.exists(os.path.join(tmpdir, "serialized", "1.pickle")))
-            self.assertTrue(os.path.exists(os.path.join(tmpdir, "serialized", "2.pickle")))
+            self.assertTrue(os.path.isfile(os.path.join(tmpdir + "serialized", "1.pickle")))
+            self.assertTrue(os.path.isfile(os.path.join(tmpdir + "serialized", "2.pickle")))
 
     def test_GetSerializedEmployee(self):
         pass

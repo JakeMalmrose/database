@@ -41,11 +41,14 @@ def SerializeAllEmployees(path):
             for row in reader:
                 id, firstName, lastName, hireYear = row
                 emp = employee(id, firstName, lastName, hireYear)
+                if not os.path.exists(path + "serialized"): # need to create directory if not already there
+                    os.mkdir(path + "serialized")
                 PickleSerializeEmployee(emp, path + "serialized")
 
 def PickleSerializeEmployee(employee, path):
-    with open(os.path.join(path, str(employee.id) + ".pickle"), 'xb') as f:
+    with open(os.path.join(path, str(employee.id) + ".pickle"), 'wb') as f:
         pickle.dump(employee, f)
+        f.close()
 
 def GetSerializedEmployee(id):
     pass
