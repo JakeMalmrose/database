@@ -62,12 +62,21 @@ class testDatabase(unittest.TestCase):
     def test_DeleteEmployee(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             with open(os.path.join(tmpdir, "1.txt"), "w") as f:
+                
                 f.write("1, John, Doe, 2019")
             db.DeleteEmployee(tmpdir, 1)
+
             self.assertFalse(os.path.exists(os.path.join(tmpdir, "1.txt")))
 
     def test_UpdateEmployee(self):
-        pass
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with open(os.path.join(tmpdir, "1.txt"), "w") as f: # create file and write sample employee
+                f.write("1, John, Doe, 2019")
+
+            db.UpdateEmployee(tmpdir, 1, "John", "ButWithNoH", 2003) # change their name and hire year
+
+            with open(os.path.join(tmpdir, "1.txt"), "r") as f:
+                self.assertEqual(f.read(), "1, John, ButWithNoH, 2003")
 
     def test_SerializeAllEmployees(self):
         pass
