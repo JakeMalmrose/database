@@ -19,10 +19,10 @@ def AddEmployee(path, id, firstName, lastName, hireYear):
         f.write(str(id) + ", " + firstName + ", " + lastName + ", " + str(hireYear))
 
 
-def DeleteEmployee(id):
-    pass
+def DeleteEmployee(path, id):
+    os.remove(os.path.join(path, str(id) + ".txt"))
 
-def UpdateEmployee(id, firstName, lastName, hireYear):
+def UpdateEmployee(path, id, firstName, lastName, hireYear):
     pass
 
 def SerializeAllEmployees():
