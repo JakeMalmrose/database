@@ -62,7 +62,7 @@ class testDatabase(unittest.TestCase):
     def test_DeleteEmployee(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             with open(os.path.join(tmpdir, "1.txt"), "w") as f:
-                
+
                 f.write("1, John, Doe, 2019")
             db.DeleteEmployee(tmpdir, 1)
 
@@ -77,9 +77,18 @@ class testDatabase(unittest.TestCase):
 
             with open(os.path.join(tmpdir, "1.txt"), "r") as f:
                 self.assertEqual(f.read(), "1, John, ButWithNoH, 2003")
+            # check to make sure you cant update a non-existent employee
+            self.assertRaises(FileNotFoundError, db.UpdateEmployee, tmpdir, 2, "John", "ButWithNoH", 2003)
 
     def test_SerializeAllEmployees(self):
-        pass
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with open(os.path.join(tmpdir, "1.txt"), "w") as f:
+                f.write("1, John, Doe, 2019")
+            with open(os.path.join(tmpdir, "2.txt"), "w") as f:
+                f.write("2, Jane, Doe, 2019")
+            db.SerializeAllEmployees(tmpdir)
+            self.assertTrue(os.path.exists(os.path.join(tmpdir, "serialized", "1.pickle")))
+            self.assertTrue(os.path.exists(os.path.join(tmpdir, "serialized", "2.pickle")))
 
     def test_GetSerializedEmployee(self):
         pass

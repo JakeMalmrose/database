@@ -1,5 +1,6 @@
 import os
 import csv
+import pickle
 
 class employee:
     def __init__(self, id, firstName, lastName, hireYear):
@@ -14,19 +15,37 @@ class employee:
     def __str__(self):
         return str(self.id) + " " + self.firstName + " " + self.lastName + " " + str(self.hireYear)
     
+    
 def AddEmployee(path, id, firstName, lastName, hireYear):
     with open(os.path.join(path, str(id) + ".txt"), "w") as f:
         f.write(str(id) + ", " + firstName + ", " + lastName + ", " + str(hireYear))
-
 
 def DeleteEmployee(path, id):
     os.remove(os.path.join(path, str(id) + ".txt"))
 
 def UpdateEmployee(path, id, firstName, lastName, hireYear):
-    pass
+    if not os.path.exists(os.path.join(path, str(id) + ".txt")):
+        raise FileNotFoundError("Employee " + str(id) + " does not exist")
+    with open(os.path.join(path, str(id) + ".txt"), "w") as f:
+        f.write(str(id) + ", " + firstName + ", " + lastName + ", " + str(hireYear))    
 
-def SerializeAllEmployees():
-    pass
+def SerializeAllEmployees(path):
+    #iterate through all files in path
+    #for each file, create an employee object
+    #serialize the employee object
+    #write the serialized employee object to a file in "path + serialized"
+
+    for file in os.listdir(path):
+        with open(os.path.join(path, file), 'r') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                id, firstName, lastName, hireYear = row
+                emp = employee(id, firstName, lastName, hireYear)
+                PickleSerializeEmployee(emp, path + "serialized")
+
+def PickleSerializeEmployee(employee, path):
+    with open(os.path.join(path, str(employee.id) + ".pickle"), 'xb') as f:
+        pickle.dump(employee, f)
 
 def GetSerializedEmployee(id):
     pass
