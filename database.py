@@ -30,11 +30,6 @@ def UpdateEmployee(path, id, firstName, lastName, hireYear):
         f.write(str(id) + ", " + firstName + ", " + lastName + ", " + str(hireYear))    
 
 def SerializeAllEmployees(path):
-    #iterate through all files in path
-    #for each file, create an employee object
-    #serialize the employee object
-    #write the serialized employee object to a file in "path + serialized"
-
     for file in os.listdir(path):
         with open(os.path.join(path, file), 'r') as f:
             reader = csv.reader(f)
@@ -50,7 +45,7 @@ def PickleSerializeEmployee(employee, path):
         pickle.dump(employee, f)
         f.close()
 
-def GetSerializedEmployee(id):
+def GetSerializedEmployee(path, id):
     pass
 
 def PrintPeopleDetails(path):

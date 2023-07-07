@@ -4,6 +4,7 @@ import tempfile
 import os
 import sys
 import io
+import pickle
 #simple_path = "C:/Users/Draupniyr/Downloads/Assignment 1 - data-1/people/simple"
 #cant use simple path here
 
@@ -91,7 +92,16 @@ class testDatabase(unittest.TestCase):
             self.assertTrue(os.path.isfile(os.path.join(tmpdir + "serialized", "2.pickle")))
 
     def test_GetSerializedEmployee(self):
-        pass
+        # function should de-serialize the employee at the path given
+        # and return the employee object
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with open(os.path.join(tmpdir, "1.pickle"), "wb") as f:
+                pickle.dump(db.employee(1, "John", "Doe", 2019), f)
+            emp = db.GetSerializedEmployee(tmpdir, 1)
+            self.assertEqual(emp.id, 1)
+            self.assertEqual(emp.firstName, "John")
+            self.assertEqual(emp.lastName, "Doe")
+            self.assertEqual(emp.hireYear, 2019)
 
 if __name__ == '__main__':
     unittest.main()
