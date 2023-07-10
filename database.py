@@ -65,7 +65,7 @@ def PrintEmployees(path):
                 emp = employee(id, firstName, lastName, hireYear)
                 print(str(emp))
             
-def FindEmployeeByLastName(path):
+def FindEmployeeByLastName(path, lastName):
     pass
 
 def FindAllEmployeesByLastName(path):
