@@ -103,5 +103,22 @@ class testDatabase(unittest.TestCase):
             self.assertEqual(emp.lastName, "Doe")
             self.assertEqual(emp.hireYear, 2019)
 
+    def test_PickleSerializeEmployee(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            db.PickleSerializeEmployee(db.employee(1, "John", "Doe", 2019), tmpdir)
+            self.assertTrue(os.path.isfile(os.path.join(tmpdir, "1.pickle")))
+
+    def test_FindEmployeeByLastName(self):
+        pass
+
+    def test_FindAllEmployeesByLastName(self):
+        pass
+
+    def test_GetAllEmployees(self):
+        pass
+
+    def test_PrintAllEmployees(self):
+        pass
+
 if __name__ == '__main__':
     unittest.main()
