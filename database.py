@@ -74,8 +74,14 @@ def FindEmployeeByLastName(path, lastName):
                 return emp
     return None
 
-def FindAllEmployeesByLastName(path):
-    pass
+def FindAllEmployeesByLastName(path, lastName):
+    employees = []
+    for file in os.listdir(path):
+        with open(os.path.join(path, file), 'rb') as f:
+            emp = pickle.load(f)
+            if emp.lastName == lastName:
+                employees.append(emp)
+    return employees
 
 def GetAllEmployees(path):
     pass
