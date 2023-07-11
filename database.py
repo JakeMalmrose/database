@@ -72,6 +72,7 @@ def FindEmployeeByLastName(path, lastName):
             emp = pickle.load(f)
             if emp.lastName == lastName:
                 return emp
+    return None
 
 def FindAllEmployeesByLastName(path):
     pass

@@ -123,7 +123,26 @@ class testDatabase(unittest.TestCase):
             self.assertEqual(emp.hireYear, 2010)
 
     def test_FindAllEmployeesByLastName(self):
-        pass
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with open(os.path.join(tmpdir, "1.pickle"), "wb") as f:
+                pickle.dump(db.employee(1, "Gerald", "Mcgee", 2019), f)
+            with open(os.path.join(tmpdir, "2.pickle"), "wb") as f:
+                pickle.dump(db.employee(2, "John", "Cena", 2010), f)
+            with open(os.path.join(tmpdir, "3.pickle"), "wb") as f:
+                pickle.dump(db.employee(3, "Jimbo", "Cena", 2012), f)
+            with open(os.path.join(tmpdir, "4.pickle"), "wb") as f:
+                pickle.dump(db.employee(4, "John", "Cenot", 2015), f)
+
+            emps = db.FindAllEmployeesByLastName(tmpdir, "Cena")
+
+            self.assertEqual(len(emps), 2)
+            self.assertEqual(emps[0].id, 2)
+            self.assertEqual(emps[0].firstName, "John")
+            self.assertEqual(emps[0].lastName, "Cena")
+            self.assertEqual(emps[0].hireYear, 2010)
+            self.assertEqual(emps[1].id, 3)
+            self.assertEqual(emps[1].firstName, "Jimbo")
+
 
     def test_GetAllEmployees(self):
         pass
