@@ -66,7 +66,12 @@ def PrintEmployees(path):
                 print(str(emp))
             
 def FindEmployeeByLastName(path, lastName):
-    pass
+    # look through all serialized employees and return the first one with the given last name
+    for file in os.listdir(path):
+        with open(os.path.join(path, file), 'rb') as f:
+            emp = pickle.load(f)
+            if emp.lastName == lastName:
+                return emp
 
 def FindAllEmployeesByLastName(path):
     pass
