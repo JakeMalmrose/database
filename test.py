@@ -145,7 +145,29 @@ class testDatabase(unittest.TestCase):
 
 
     def test_GetAllEmployees(self):
-        pass
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with open(os.path.join(tmpdir, "1.pickle"), "wb") as f:
+                pickle.dump(db.employee(1, "Gerald", "Mcgee", 2019), f)
+            with open(os.path.join(tmpdir, "2.pickle"), "wb") as f:
+                pickle.dump(db.employee(2, "John", "Cena", 2010), f)
+            with open(os.path.join(tmpdir, "3.pickle"), "wb") as f:
+                pickle.dump(db.employee(3, "Jimbo", "Cena", 2012), f)
+            with open(os.path.join(tmpdir, "4.pickle"), "wb") as f:
+                pickle.dump(db.employee(4, "John", "Cenot", 2015), f)
+
+            emps = db.GetAllEmployees(tmpdir)
+
+            self.assertEqual(len(emps), 4)
+            self.assertEqual(emps[1].id, 1)
+            self.assertEqual(emps[1].firstName, "Gerald")
+            self.assertEqual(emps[1].lastName, "Mcgee")
+            self.assertEqual(emps[1].hireYear, 2019)
+            self.assertEqual(emps[2].id, 2)
+            self.assertEqual(emps[2].firstName, "John")
+            self.assertEqual(emps[3].id, 3)
+            self.assertEqual(emps[3].firstName, "Jimbo")
+            self.assertEqual(emps[4].id, 4)
+            self.assertEqual(emps[4].firstName, "John")
 
     def test_PrintAllEmployees(self):
         pass
