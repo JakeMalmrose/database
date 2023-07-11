@@ -92,4 +92,6 @@ def GetAllEmployees(path):
     return dictionary
 
 def PrintAllEmployees(path):
-    pass
+    dictionary = GetAllEmployees(path)
+    for key in dictionary: # i love for statements man
+        print(dictionary[key])
