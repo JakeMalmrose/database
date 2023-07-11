@@ -84,7 +84,12 @@ def FindAllEmployeesByLastName(path, lastName):
     return employees
 
 def GetAllEmployees(path):
-    pass
+    dictionary = {}
+    for file in os.listdir(path):
+        with open(os.path.join(path, file), 'rb') as f:
+            emp = pickle.load(f)
+            dictionary[emp.id] = emp
+    return dictionary
 
 def PrintAllEmployees(path):
     pass
