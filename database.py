@@ -56,6 +56,12 @@ def PrintPeopleDetails(path):
         with open(os.path.join(path, file), 'r') as f:
             print(f.read())
 
+def PrintPeopleDetailsSerialized(path): # im sorry but im not breaking my tests to read pickled files </3
+    for file in os.listdir(path):
+        with open(os.path.join(path, file), 'rb') as f:
+            emp = pickle.load(f)
+            print(str(emp)) 
+
 def PrintEmployees(path):
     for file in os.listdir(path):
         with open(os.path.join(path, file), 'r') as f:
