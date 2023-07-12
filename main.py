@@ -14,7 +14,7 @@ def time_task(method, *args):
     timeStart = time.perf_counter()
     method(*args)
     timeEnd = time.perf_counter()
-    return timeEnd - timeStart
+    return (timeEnd - timeStart)*1000
 
 
 main()
