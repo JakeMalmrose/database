@@ -4,18 +4,15 @@ import os
 
 def main():
     client = db.ConnectToMongoDB()
-    db.PrintEmployeesMongo(client)
-    print("Adding employee")
-    db.AddEmployeeMongo(client, 3, "John", "Doe", 2019)
-    db.PrintEmployeesMongo(client)
-    print("Finding employee")
-    print(db.FindEmployeeMongo(client, 3))
-    print("Updating employee")
-    db.UpdateEmployeeMongo(client, 3, "John", "Cena", 2023)
-    db.PrintEmployeesMongo(client)
-    print("Deleting employee")
-    db.DeleteEmployeeMongo(client, 3)
-    db.PrintEmployeesMongo(client)
+    # getting each file in long directory and adding it to the database (manually)
+    for file in os.listdir("C:\\Users\\Jmalmrose\\Downloads\\people\\long"):
+        with open(os.path.join("C:\\Users\\Jmalmrose\\Downloads\\people\\long", file), "r") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    id, firstName, lastName, hireYear = line.split(",")
+                    print("adding employee " + id + " " + firstName)
+                    db.AddEmployeeMongo(client, id, firstName, lastName, hireYear)
 
 
 
