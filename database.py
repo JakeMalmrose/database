@@ -1,6 +1,34 @@
 import os
 import csv
 import pickle
+import pymongo
+
+def ConnectToMongoDB():
+    client = pymongo.MongoClient("mongodb://localhost:2717/")
+    return client["mydatabase"]
+
+def AddEmployeeMongo(db, id, firstName, lastName, hireYear):
+    collection = db["employees"]
+    employee = { "id": id, "firstName": firstName, "lastName": lastName, "hireYear": hireYear }
+    collection.insert_one(employee)
+
+def DeleteEmployeeMongo(db, id):
+    collection = db["employees"]
+    collection.delete_one({"id": id})
+
+def UpdateEmployeeMongo(db, id, firstName, lastName, hireYear):
+    collection = db["employees"]
+    collection.update_one({"id": id}, {"$set": {"firstName": firstName, "lastName": lastName, "hireYear": hireYear}})
+
+def PrintEmployeesMongo(db):
+    collection = db["employees"]
+    for x in collection.find():
+        print(x)
+
+def FindEmployeeMongo(db, id):
+    collection = db["employees"]
+    for x in collection.find({"id": id}):
+        return x
 
 class employee:
     def __init__(self, id, firstName, lastName, hireYear):
