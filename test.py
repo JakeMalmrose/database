@@ -5,8 +5,47 @@ import os
 import sys
 import io
 import pickle
+import pymongo
+import pymongo.errors
 #simple_path = "C:/Users/Draupniyr/Downloads/Assignment 1 - data-1/people/simple"
 #cant use simple path here
+
+class TestMongoDB(unittest.TestCase):
+    def test_ConnectToMongoDB(self):
+        db.ConnectToMongoDBTestDrop()
+    
+    def test_AddEmployeeMongo(self):
+        client = db.ConnectToMongoDBTestDrop()
+        db.AddEmployeeMongo(client, 1, "John", "Doe", 2019)
+        self.assertTrue(db.FindEmployeeMongo(client, 1))
+        self.assertRaises(pymongo.errors.DuplicateKeyError, db.AddEmployeeMongo, client, 1, "John", "Doe", 2019)
+    
+    def test_FindEmployeeMongo(self):
+        client = db.ConnectToMongoDBTestDrop()
+        db.AddEmployeeMongo(client, 1, "John", "Doe", 2022)
+        db.AddEmployeeMongo(client, 2, "Chris", "Hansen", 2012)
+        employee = db.FindEmployeeMongo(client, 2)
+        self.assertEqual(employee["id"], 2)
+        self.assertEqual(employee["firstName"], "Chris")
+        self.assertEqual(employee["lastName"], "Hansen")
+        self.assertEqual(employee["hireYear"], 2012)
+
+    def test_UpdateEmployeeMongo(self):
+        client = db.ConnectToMongoDBTestDrop()
+        db.AddEmployeeMongo(client, 1, "Beans", "Doe", 2019)
+        db.UpdateEmployeeMongo(client, 1, "John", "Cena", 2032)
+        employee = db.FindEmployeeMongo(client, 1)
+        self.assertEqual(employee["firstName"], "John")
+        self.assertEqual(employee["lastName"], "Cena")
+        self.assertEqual(employee["hireYear"], 2032)
+    
+    def test_DeleteEmployeeMongo(self):
+        client = db.ConnectToMongoDBTestDrop()
+        db.AddEmployeeMongo(client, 1, "John", "Doe", 2019)
+        db.DeleteEmployeeMongo(client, 1)
+        self.assertFalse(db.FindEmployeeMongo(client, 1))
+    
+    
 
 class TestEmployee(unittest.TestCase):
     def test_employee_init(self):
