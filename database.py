@@ -2,13 +2,21 @@ import os
 import csv
 import pickle
 import pymongo
+import pymongo.errors
 
 def ConnectToMongoDB():
     client = pymongo.MongoClient("mongodb://localhost:2717/")
-    return client["mydatabase"]
+    return client["pythondatabase"]
+
+def ConnectToMongoDBTestDrop():
+    client = pymongo.MongoClient("mongodb://localhost:2717/")
+    client.drop_database("testdatabase")
+    return client["testdatabase"]
 
 def AddEmployeeMongo(db, id, firstName, lastName, hireYear):
     collection = db["employees"]
+    if FindEmployeeMongo(db, id):
+        raise pymongo.errors.DuplicateKeyError("Employee " + str(id) + " already exists")
     employee = { "id": id, "firstName": firstName, "lastName": lastName, "hireYear": hireYear }
     collection.insert_one(employee)
 
@@ -29,6 +37,8 @@ def FindEmployeeMongo(db, id):
     collection = db["employees"]
     for x in collection.find({"id": id}):
         return x
+    
+#-----------------------------------------#
 
 class employee:
     def __init__(self, id, firstName, lastName, hireYear):
@@ -43,7 +53,8 @@ class employee:
     def __str__(self):
         return str(self.id) + " " + self.firstName + " " + self.lastName + " " + str(self.hireYear)
     
-    
+#-----------------------------------------#
+
 def AddEmployee(path, id, firstName, lastName, hireYear):
     with open(os.path.join(path, str(id) + ".txt"), "w") as f:
         f.write(str(id) + ", " + firstName + ", " + lastName + ", " + str(hireYear))
