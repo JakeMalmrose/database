@@ -11,6 +11,9 @@ def main():
                 line = line.strip()
                 if line:
                     id, firstName, lastName, hireYear = line.split(",")
+                    firstName = firstName.strip()
+                    lastName = lastName.strip()
+                    hireYear = int(hireYear.strip())
                     print("adding employee " + id + " " + firstName)
                     db.AddEmployeeMongo(client, id, firstName, lastName, hireYear)
 
