@@ -7,8 +7,67 @@ import io
 import pickle
 import pymongo
 import pymongo.errors
+import neo4j
+import neo4j.exceptions
 #simple_path = "C:/Users/Draupniyr/Downloads/Assignment 1 - data-1/people/simple"
 #cant use simple path here
+
+class TestNeo4j(unittest.TestCase):
+    def test_ConnectToNeo4j(self):
+        db.ConnectToNeoTestDrop()
+
+    def test_AddEmployee(self):
+        driver = db.ConnectToNeoTestDrop()
+        db.AddEmployeeNeo(driver, 1, "John", "Doe", 2019)
+        self.assertTrue(db.FindEmployeeNeo(driver, 1))
+        
+    def test_AddRelationship(self):
+        driver = db.ConnectToNeoTestDrop()
+        db.AddEmployeeNeo(driver, 1, "John", "Doe", 2019)
+        db.AddEmployeeNeo(driver, 2, "Jane", "Doe", 2019)
+        db.AddRelationshipNeo(driver, 1, 2, "FRIENDS_WITH")
+        self.assertTrue(db.FindRelationshipsNeo(driver, 1, 2))
+    
+    def test_FindRelationships(self):
+        driver = db.ConnectToNeoTestDrop()
+        db.AddEmployeeNeo(driver, 1, "John", "Doe", 2019)
+        db.AddEmployeeNeo(driver, 2, "Jane", "Doe", 2019)
+        db.AddRelationshipNeo(driver, 1, 2, "FRIENDS_WITH")
+        db.AddRelationshipNeo(driver, 1, 2, "WORKS_WITH")
+        self.assertEqual(db.FindRelationshipsNeo(driver, 1, 2), ["FRIENDS_WITH", "WORKS_WITH"])
+
+    def test_FindEmployee(self):
+        driver = db.ConnectToNeoTestDrop()
+        db.AddEmployeeNeo(driver, 1, "John", "Doe", 2019)
+        employee = db.FindEmployeeNeo(driver, 1)
+        self.assertEqual(employee["a.id"], 1)
+        self.assertEqual(employee["a.firstName"], "John")
+        self.assertEqual(employee["a.lastName"], "Doe")
+        self.assertEqual(employee["a.hireYear"], 2019)
+    
+    def test_DeleteEmployee(self):
+        driver = db.ConnectToNeoTestDrop()
+        db.AddEmployeeNeo(driver, 1, "John", "Doe", 2019)
+        db.DeleteEmployeeNeo(driver, 1)
+        self.assertFalse(db.FindEmployeeNeo(driver, 1))
+    
+    def test_DeleteRelationship(self):
+        driver = db.ConnectToNeoTestDrop()
+        db.AddEmployeeNeo(driver, 1, "John", "Doe", 2019)
+        db.AddEmployeeNeo(driver, 2, "Jane", "Doe", 2019)
+        db.AddRelationshipNeo(driver, 1, 2, "FRIENDS_WITH")
+        db.DeleteRelationshipNeo(driver, 1, 2, "FRIENDS_WITH")
+        self.assertFalse(db.FindRelationshipsNeo(driver, 1, 2))
+        
+    def test_UpdateEmployee(self):
+        driver = db.ConnectToNeoTestDrop()
+        db.AddEmployeeNeo(driver, 1, "John", "Doe", 2019)
+        db.UpdateEmployeeNeo(driver, 1, "John", "Cena", 2032)
+        employee = db.FindEmployeeNeo(driver, 1)
+        self.assertEqual(employee["a.firstName"], "John")
+        self.assertEqual(employee["a.lastName"], "Cena")
+        self.assertEqual(employee["a.hireYear"], 2032)
+        
 
 class TestMongoDB(unittest.TestCase):
     def test_ConnectToMongoDB(self):
