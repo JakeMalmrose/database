@@ -3,6 +3,72 @@ import csv
 import pickle
 import pymongo
 import pymongo.errors
+from neo4j import GraphDatabase
+from neo4j.exceptions import DriverError, Neo4jError
+
+def ConnectToNeo4j():
+    uri = "bolt://127.0.0.1:7687"
+    driver = GraphDatabase.driver(uri, auth=("neo4j", "password2"))
+    driver.close()
+    return driver
+
+def ConnectToNeoTestDrop():
+    uri = "bolt://127.0.0.1:7687"
+    driver = GraphDatabase.driver(uri, auth=("neo4j", "password2"))
+    with driver.session() as session:
+        session.run("MATCH (n) DETACH DELETE n")
+    driver.close()
+    return driver
+
+def AddEmployeeNeo(driver, id, firstName, lastName, hireYear):
+    with driver.session() as session:
+        session.run("CREATE (a:Employee {id: $id, firstName: $firstName, lastName: $lastName, hireYear: $hireYear})", {"id": id, "firstName": firstName, "lastName": lastName, "hireYear": hireYear})
+
+def DeleteEmployeeNeo(driver, id):
+    with driver.session() as session:
+        session.run("MATCH (a:Employee {id: $id}) DETACH DELETE a", {"id": id})
+
+def UpdateEmployeeNeo(driver, id, firstName, lastName, hireYear):
+    with driver.session() as session:
+        session.run("MATCH (a:Employee {id: $id}) SET a.firstName = $firstName, a.lastName = $lastName, a.hireYear = $hireYear", {"id": id, "firstName": firstName, "lastName": lastName, "hireYear": hireYear})
+
+def PrintEmployeesNeo(driver):
+    with driver.session() as session:
+        result = session.run("MATCH (a:Employee) RETURN a.id, a.firstName, a.lastName, a.hireYear")
+        for record in result:
+            print("Id: " +str(record[0]) + ", Name: " + str(record[1]) + " " + str(record[2]) + ", Hire Year: " + str(record[3]))
+
+def FindEmployeeNeo(driver, id):
+    with driver.session() as session:
+        result = session.run("MATCH (a:Employee {id: $id}) RETURN a.id, a.firstName, a.lastName, a.hireYear", {"id": id})
+        for record in result:
+            return record
+
+def AddRelationshipNeo(driver, id1, id2, relationship):
+    with driver.session() as session:
+        session.run("MATCH (a:Employee {id: $id1}), (b:Employee {id: $id2}) CREATE (a)-[:" + relationship + "]->(b)", {"id1": id1, "id2": id2})
+
+def DeleteRelationshipNeo(driver, id1, id2, relationship):
+    with driver.session() as session:
+        session.run("MATCH (a:Employee {id: $id1})-[r:" + relationship + "]->(b:Employee {id: $id2}) DELETE r", {"id1": id1, "id2": id2})
+
+def GetRelationshipsNeo(driver, id):
+    with driver.session() as session:
+        result = session.run("MATCH (a:Employee {id: $id})-[r]->(b:Employee) RETURN r", {"id": id})
+        relationships = []
+        for record in result:
+            relationships.append(record.values()[0].type)
+        return relationships
+
+def FindRelationshipsNeo(driver, id1, id2):
+    with driver.session() as session:
+        result = session.run("MATCH (a:Employee {id: $id1})-[r]->(b:Employee {id: $id2}) RETURN r", {"id1": id1, "id2": id2})
+        relationships = []
+        for relation in result:
+            relationships.append(relation.values()[0].type)
+        return relationships
+
+
 
 def ConnectToMongoDB():
     client = pymongo.MongoClient("mongodb://localhost:2717/")
