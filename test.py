@@ -14,7 +14,7 @@ import neo4j.exceptions
 
 class TestNeo4j(unittest.TestCase):
     def test_ConnectToNeo4j(self):
-        db.ConnectToNeoTestDrop()
+        self.assertTrue(db.ConnectToNeoTestDrop())
 
     def test_AddEmployee(self):
         driver = db.ConnectToNeoTestDrop()
