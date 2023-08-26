@@ -5,6 +5,41 @@ import pymongo
 import pymongo.errors
 from neo4j import GraphDatabase
 from neo4j.exceptions import DriverError, Neo4jError
+import redis
+
+def ConnectToRedis():
+    r = redis.Redis(host='localhost', port=6379, db=0)
+    return r
+
+def ConnectToRedisTestDrop():
+    r = redis.Redis(host='localhost', port=6379, db=0)
+    r.flushdb()
+    return r
+
+def AddEmployeeRedis(r, id, firstName, lastName, hireYear):
+    if r.exists(id):
+        raise redis.exceptions.ResponseError("Employee " + str(id) + " already exists")
+    else:
+        r.set(id, firstName + "," + lastName + "," + str(hireYear))
+
+def FindEmployeeRedis(r, id):
+    if r.exists(id):
+        return r.get(id)
+    else:
+        return None
+
+def DeleteEmployeeRedis(r, id):
+    if r.exists(id):
+        r.delete(id)
+    else:
+        raise redis.exceptions.ResponseError("Employee " + str(id) + " does not exist")
+
+def UpdateEmployeeRedis(r, id, firstName, lastName, hireYear):
+    if r.exists(id):
+        r.set(id, firstName + "," + lastName + "," + str(hireYear))
+    else:
+        raise redis.exceptions.ResponseError("Employee " + str(id) + " does not exist")
+
 
 def ConnectToNeo4j():
     uri = "bolt://127.0.0.1:7687"

@@ -9,8 +9,38 @@ import pymongo
 import pymongo.errors
 import neo4j
 import neo4j.exceptions
+import redis.exceptions
 #simple_path = "C:/Users/Draupniyr/Downloads/Assignment 1 - data-1/people/simple"
 #cant use simple path here
+
+class TestRedis(unittest.TestCase):
+    def test_ConnectToRedis(self):
+        db.ConnectToRedisTestDrop()
+    
+    def test_AddEmployeeRedis(self):
+        r = db.ConnectToRedisTestDrop()
+        db.AddEmployeeRedis(r, 1, "John", "Doe", 2019)
+        self.assertEqual(r.get(1), b"John,Doe,2019")
+        self.assertRaises(redis.exceptions.ResponseError, db.AddEmployeeRedis, r, 1, "John", "Doe", 2019)
+
+    def test_FindEmployeeRedis(self):
+        r = db.ConnectToRedisTestDrop()
+        db.AddEmployeeRedis(r, 1, "John", "Doe", 2019)
+        employee = db.FindEmployeeRedis(r, 1)
+        self.assertEqual(employee, b"John,Doe,2019")
+
+    def test_DeleteEmployeeRedis(self):
+        r = db.ConnectToRedisTestDrop()
+        db.AddEmployeeRedis(r, 1, "John", "Doe", 2019)
+        db.DeleteEmployeeRedis(r, 1)
+        self.assertFalse(r.exists(1))
+    
+    def test_UpdateEmployeeRedis(self):
+        r = db.ConnectToRedisTestDrop()
+        db.AddEmployeeRedis(r, 1, "John", "Doe", 2019)
+        db.UpdateEmployeeRedis(r, 1, "John", "Cena", 2032)
+        self.assertEqual(r.get(1), b"John,Cena,2032")
+        self.assertRaises(redis.exceptions.ResponseError, db.UpdateEmployeeRedis, r, 2, "John", "Cena", 2032)
 
 class TestNeo4j(unittest.TestCase):
     def test_ConnectToNeo4j(self):
