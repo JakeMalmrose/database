@@ -8,11 +8,11 @@ from neo4j.exceptions import DriverError, Neo4jError
 import redis
 
 def ConnectToRedis():
-    r = redis.Redis(host='localhost', port=6379, db=0)
+    r = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
     return r
 
 def ConnectToRedisTestDrop():
-    r = redis.Redis(host='localhost', port=6379, db=0)
+    r = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
     r.flushdb()
     return r
 

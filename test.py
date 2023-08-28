@@ -20,14 +20,14 @@ class TestRedis(unittest.TestCase):
     def test_AddEmployeeRedis(self):
         r = db.ConnectToRedisTestDrop()
         db.AddEmployeeRedis(r, 1, "John", "Doe", 2019)
-        self.assertEqual(r.get(1), b"John,Doe,2019")
+        self.assertEqual(r.get(1), "John,Doe,2019")
         self.assertRaises(redis.exceptions.ResponseError, db.AddEmployeeRedis, r, 1, "John", "Doe", 2019)
 
     def test_FindEmployeeRedis(self):
         r = db.ConnectToRedisTestDrop()
         db.AddEmployeeRedis(r, 1, "John", "Doe", 2019)
         employee = db.FindEmployeeRedis(r, 1)
-        self.assertEqual(employee, b"John,Doe,2019")
+        self.assertEqual(employee, "John,Doe,2019")
 
     def test_DeleteEmployeeRedis(self):
         r = db.ConnectToRedisTestDrop()
@@ -39,7 +39,7 @@ class TestRedis(unittest.TestCase):
         r = db.ConnectToRedisTestDrop()
         db.AddEmployeeRedis(r, 1, "John", "Doe", 2019)
         db.UpdateEmployeeRedis(r, 1, "John", "Cena", 2032)
-        self.assertEqual(r.get(1), b"John,Cena,2032")
+        self.assertEqual(r.get(1), "John,Cena,2032")
         self.assertRaises(redis.exceptions.ResponseError, db.UpdateEmployeeRedis, r, 2, "John", "Cena", 2032)
 
 class TestNeo4j(unittest.TestCase):
